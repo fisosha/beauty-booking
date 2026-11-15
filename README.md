@@ -20,7 +20,7 @@
 | Папка | Вміст |
 |---|---|
 | [`backend/`](backend/) | REST API (Python, FastAPI, SQLite), тести, діаграми UML, журнали тестування |
-| [`frontend/`](frontend/) | Клієнтська частина |
+| [`frontend/`](frontend/) | Клієнтська частина (HTML, CSS, JavaScript без збірки), модульні тести |
 
 ## Швидкий старт бекенду
 
@@ -32,3 +32,13 @@ uvicorn app.main:app --reload
 ```
 
 API-документація (Swagger): http://127.0.0.1:8000/docs
+
+## Швидкий старт фронтенду
+
+```bash
+cd frontend
+python -m http.server 5173
+```
+
+Відкрити http://127.0.0.1:5173. Якщо бекенд не запущено, фронт працює в демо-режимі —
+деталі у [`frontend/README.md`](frontend/README.md).
