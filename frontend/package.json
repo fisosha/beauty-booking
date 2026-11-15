@@ -1,0 +1,11 @@
+{
+  "name": "beauty-booking-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Клієнтська частина Beauty Booking (HTML/CSS/JS без збірки)",
+  "scripts": {
+    "start": "python -m http.server 5173",
+    "test": "node --test"
+  }
+}
