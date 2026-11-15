@@ -1,0 +1,73 @@
+@startuml
+!include _style.iuml
+title Діаграма класів бекенду
+hide empty members
+package models <<Folder>> {
+  class Master {
+    id : int
+    name : str
+    specialization : str
+    phone : str
+  }
+  class Service {
+    id : int
+    name : str
+    duration_min : int
+    price : float
+  }
+  class TimeSlot {
+    id : int
+    date : date
+    start_time : time
+    end_time : time
+  }
+  class Booking {
+    id : int
+    client_name : str
+    client_phone : str
+    date : date
+    start_time : time
+    end_time : time
+    status : str
+    cancel_code : str
+  }
+}
+package services <<Folder>> {
+  class "services" as SV <<module>> {
+    + free_slots(db, master_id, service_id, day) : list[time]
+    + available_dates(db, master_id, service_id, start, days) : list[date]
+    + create_booking(db, service_id, day, start, name, phone) : Booking
+    + get_booking(db, code) : Booking
+    + cancel_booking(db, code) : Booking
+    + add_schedule(db, master_id, from, to, weekdays, start, end) : int
+  }
+  class NotFound <<exception>>
+  class SlotUnavailable <<exception>>
+}
+class "slots" as SL <<module>> {
+  + generate_free_slots(work, busy, duration, step, day, now) : list[time]
+  + overlaps(a_start, a_end, b_start, b_end) : bool
+  + add_minutes(t, minutes) : time
+}
+package schemas <<Folder>> {
+  class BookingCreate {
+    service_id : int
+    date : date
+    start_time : time
+    client_name : str
+    client_phone : str
+  }
+  class ScheduleCreate
+  class ServiceCreate
+  class MasterCreate
+}
+Master "1" *-- "0..*" Service
+Master "1" *-- "0..*" TimeSlot
+Master "1" -- "0..*" Booking
+Service "1" -- "0..*" Booking
+SV ..> SL
+SV ..> Booking
+SV ..> TimeSlot
+SV ..> NotFound
+SV ..> SlotUnavailable
+@enduml

@@ -1,0 +1,59 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /opt/beauty-booking-backend
+configfile: pytest.ini
+plugins: platformdirs-4.13.3, anyio-4.15.1, cov-7.1.0
+collecting ... collected 31 items
+
+tests/unit/test_booking_logic.py::test_booking_gets_cancel_code_and_end_time PASSED [  3%]
+tests/unit/test_booking_logic.py::test_same_slot_cannot_be_booked_twice PASSED [  6%]
+tests/unit/test_booking_logic.py::test_overlapping_slot_cannot_be_booked PASSED [  9%]
+tests/unit/test_booking_logic.py::test_booking_outside_working_hours_is_rejected PASSED [ 12%]
+tests/unit/test_booking_logic.py::test_cancel_frees_the_slot PASSED      [ 16%]
+tests/unit/test_booking_logic.py::test_unknown_cancel_code_raises_not_found PASSED [ 19%]
+tests/unit/test_booking_logic.py::test_schedule_skips_overlapping_intervals_and_other_weekdays PASSED [ 22%]
+tests/unit/test_schemas.py::test_phone_local_format_is_normalized PASSED [ 25%]
+tests/unit/test_schemas.py::test_phone_with_spaces_and_dashes_is_normalized PASSED [ 29%]
+tests/unit/test_schemas.py::test_invalid_phone_is_rejected[12345] PASSED [ 32%]
+tests/unit/test_schemas.py::test_invalid_phone_is_rejected[+1 202 555 0100] PASSED [ 35%]
+tests/unit/test_schemas.py::test_invalid_phone_is_rejected[06712345678] PASSED [ 38%]
+tests/unit/test_schemas.py::test_invalid_phone_is_rejected[abc] PASSED   [ 41%]
+tests/unit/test_schemas.py::test_too_short_client_name_is_rejected PASSED [ 45%]
+tests/unit/test_schemas.py::test_schedule_date_range_must_be_valid PASSED [ 48%]
+tests/unit/test_schemas.py::test_schedule_weekday_out_of_range_is_rejected PASSED [ 51%]
+tests/unit/test_schemas.py::test_service_negative_price_is_rejected PASSED [ 54%]
+tests/unit/test_slots.py::test_no_work_intervals_gives_no_slots PASSED   [ 58%]
+tests/unit/test_slots.py::test_slots_on_15_min_grid PASSED               [ 61%]
+tests/unit/test_slots.py::test_duration_equal_to_interval_gives_one_slot PASSED [ 64%]
+tests/unit/test_slots.py::test_duration_longer_than_interval_gives_no_slots PASSED [ 67%]
+tests/unit/test_slots.py::test_busy_booking_removes_overlapping_slots PASSED [ 70%]
+tests/unit/test_slots.py::test_adjacent_booking_does_not_block PASSED    [ 74%]
+tests/unit/test_slots.py::test_several_work_intervals_are_merged_and_sorted PASSED [ 77%]
+tests/unit/test_slots.py::test_past_day_has_no_slots PASSED              [ 80%]
+tests/unit/test_slots.py::test_today_skips_time_in_the_past PASSED       [ 83%]
+tests/unit/test_slots.py::test_non_positive_duration_raises PASSED       [ 87%]
+tests/unit/test_slots.py::test_overlaps[a0-b0-True] PASSED               [ 90%]
+tests/unit/test_slots.py::test_overlaps[a1-b1-False] PASSED              [ 93%]
+tests/unit/test_slots.py::test_overlaps[a2-b2-True] PASSED               [ 96%]
+tests/unit/test_slots.py::test_add_minutes_and_day_overflow PASSED       [100%]
+
+------- generated xml file: /opt/beauty-booking-backend/reports/unit.xml -------
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.18-final-0 _______________
+
+Name                      Stmts   Miss  Cover
+---------------------------------------------
+app/__init__.py               0      0   100%
+app/config.py                 4      0   100%
+app/database.py              24      4    83%
+app/main.py                  23      4    83%
+app/models.py                47      0   100%
+app/routers/__init__.py       0      0   100%
+app/routers/admin.py         30     17    43%
+app/routers/public.py        59     35    41%
+app/schemas.py               93      3    97%
+app/services.py              68      5    93%
+app/slots.py                 32      0   100%
+---------------------------------------------
+TOTAL                       380     68    82%
+============================== 31 passed in 0.66s ==============================

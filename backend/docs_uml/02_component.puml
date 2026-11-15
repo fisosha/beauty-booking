@@ -1,0 +1,24 @@
+@startuml
+!include _style.iuml
+title Архітектура бекенду (діаграма компонентів)
+component "Front-end\n(браузер клієнта)" as FE
+component "Адмін-скрипти\n(seed.py)" as SEED
+package "Beauty Booking API (FastAPI)" {
+  component "routers/public.py\nклієнтське API" as PUB
+  component "routers/admin.py\nадмін-API (X-Admin-Token)" as ADM
+  component "schemas.py\nвалідація (Pydantic)" as SCH
+  component "services.py\nбізнес-логіка, транзакції" as SRV
+  component "slots.py\nалгоритм слотів" as SL
+  component "models.py\nORM (SQLAlchemy)" as MOD
+}
+database "SQLite / PostgreSQL" as DB
+FE --> PUB : HTTP REST / JSON
+SEED --> SRV
+ADM --> SRV
+PUB --> SCH
+ADM --> SCH
+PUB --> SRV
+SRV --> SL
+SRV --> MOD
+MOD --> DB
+@enduml

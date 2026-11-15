@@ -1,0 +1,35 @@
+@startuml
+!include _style.iuml
+title Діаграма послідовності: бронювання слота (BE-04)
+actor "Клієнт" as U
+participant "Front-end" as FE
+participant "POST /api/bookings\n(routers/public)" as API
+participant "BookingCreate\n(валідація)" as V
+participant "services" as S
+participant "slots" as SL
+database "БД" as DB
+U -> FE : обрати послугу, дату, час,\nввести ім'я й телефон
+FE -> API : POST /api/bookings (JSON)
+API -> V : перевірити поля
+alt невірний телефон / ім'я
+  V --> API : ValidationError
+  API --> FE : 422
+else дані коректні
+  API -> S : create_booking(...)
+  S -> DB : BEGIN IMMEDIATE (блокування на запис)
+  S -> DB : робочі інтервали та активні записи на дату
+  S -> SL : generate_free_slots(...)
+  SL --> S : вільні слоти
+  alt час вільний
+    S -> DB : INSERT booking (cancel_code)
+    S -> DB : COMMIT
+    S --> API : Booking
+    API --> FE : 201 + cancel_code
+    FE --> U : екран успіху з кодом
+  else час уже зайнятий
+    S -> DB : ROLLBACK
+    S --> API : SlotUnavailable
+    API --> FE : 409 «цей час уже зайнятий»
+  end
+end
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+!include _style.iuml
+title Схема бази даних
+hide circle
+skinparam linetype ortho
+entity "masters" as M {
+  * id : INTEGER <<PK>>
+  --
+  * name : VARCHAR(100)
+  * specialization : VARCHAR(100)
+  phone : VARCHAR(20)
+}
+entity "services" as S {
+  * id : INTEGER <<PK>>
+  --
+  * master_id : INTEGER <<FK>>
+  * name : VARCHAR(100)
+  * duration_min : INTEGER  (> 0)
+  * price : NUMERIC(10,2)  (>= 0)
+}
+entity "time_slots" as T {
+  * id : INTEGER <<PK>>
+  --
+  * master_id : INTEGER <<FK>>
+  * date : DATE
+  * start_time : TIME
+  * end_time : TIME  (start < end)
+}
+entity "bookings" as B {
+  * id : INTEGER <<PK>>
+  --
+  * master_id : INTEGER <<FK>>
+  * service_id : INTEGER <<FK>>
+  * client_name : VARCHAR(100)
+  * client_phone : VARCHAR(20)
+  * date : DATE
+  * start_time : TIME
+  * end_time : TIME
+  * status : 'active' | 'cancelled'
+  * cancel_code : VARCHAR(16) <<UNIQUE>>
+  * created_at : DATETIME
+}
+M ||--o{ S
+M ||--o{ T
+M ||--o{ B
+S ||--o{ B
+note bottom of B
+  UNIQUE (master_id, date, start_time)
+  WHERE status = 'active'
+end note
+@enduml
